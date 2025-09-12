@@ -7,6 +7,7 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
+    "test": { "dependsOn": ["^build"], "outputs": ["apps/web/coverage/**"] },
     "lint": {
       "dependsOn": ["^lint"]
     },
@@ -14,8 +15,10 @@
       "dependsOn": ["^check-types"]
     },
     "dev": {
+      "with": ["check-types"],
       "cache": false,
       "persistent": true
     }
+    
   }
 }

@@ -1,6 +1,11 @@
 {
   "extends": "@repo/typescript-config/nextjs.json",
   "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "react",
+    "types": [
+      "vitest/globals"
+    ],
     "plugins": [
       {
         "name": "next"
