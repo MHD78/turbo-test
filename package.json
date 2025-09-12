@@ -7,7 +7,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.8.0",
@@ -20,7 +21,7 @@
     "typescript": "5.9.2",
     "vitest": "^3.2.4"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@8.15.0",
   "engines": {
     "node": ">=18"
   }
