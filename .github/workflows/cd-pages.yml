@@ -2,8 +2,10 @@
 name: CD (Pages)
 
 on:
-  push: { branches: [main] }
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI"]
+    branches: [main]
+    types: [completed]
 
 permissions:
   contents: read
@@ -11,27 +13,34 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages-${{ github.ref }}
+  group: pages-${{ github.event.workflow_run.head_branch }}
   cancel-in-progress: true
 
 env:
-  APP_FILTER: web # turborepo package name
-  PUBLISH_DIR: apps/web/out # Next.js static export output directory
+  APP_FILTER: <app>
+  PUBLISH_DIR: apps/<app>/dist # Next export: apps/<app>/out
 
 jobs:
   deploy:
+    if: >
+      ${{
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'push'
+      }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - uses: pnpm/action-setup@v4
         with:
-          version: 8.15.0
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: "**/pnpm-lock.yaml"
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
       - uses: actions/cache@v4
