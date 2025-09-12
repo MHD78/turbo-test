@@ -16,7 +16,7 @@ concurrency:
 
 env:
   APP_FILTER: web # turborepo package name
-  PUBLISH_DIR: apps/web/.next # or apps/<app>/out for Next export
+  PUBLISH_DIR: apps/web/out # Next.js static export output directory
 
 jobs:
   deploy:
@@ -36,7 +36,7 @@ jobs:
           path: node_modules/.cache/turbo
           key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-turbo-
-      - run: pnpm turbo run build --filter=${{ env.APP_FILTER }}
+      - run: pnpm build --filter=${{ env.APP_FILTER }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.PUBLISH_DIR }}
