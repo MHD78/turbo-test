@@ -8,6 +8,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "test": { "dependsOn": ["^build"], "outputs": ["apps/web/coverage/**"] },
+    "test:coverage": { "dependsOn": ["^build"], "outputs": ["apps/web/coverage/**"] },
     "lint": {
       "dependsOn": ["^lint"]
     },
